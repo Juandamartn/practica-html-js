@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Almacén</title>
+</head>
+
+<body>
+  <header>
+    <h1>Calificaciones</h1>
+  </header>
+  <div class="form">
+    <form id="form">
+      <input type="range" oninput="lcalificacion1.innerText = calificacion1.value;" id="calificacion1" name="calificacion1" min="0" max="100" value="0">
+      <label for="calificacion1" id="lcalificacion1">0</label>
+      <script>
+        var numCalificacion = 1;
+
+        function calcular() {
+          numInputs = document.querySelectorAll("input");
+          var suma = 0;
+          var promedio = 0;
+
+          for (i = 0; i < numInputs.length; i++) {
+            suma += parseInt(numInputs[i].value);
+          }
+
+          promedio = suma / numInputs.length;
+          document.getElementById("promedio").innerText = promedio.toFixed(0);
+        }
+
+        function agregar() {
+          numCalificacion++;
+          newDiv = document.createElement("div");
+
+          newInput = document.createElement("input");
+          newInput.oninput = function() {
+            //document.getElementById("l" + this.id).innerText = this.value;
+            this.nextSibling.innerText = this.value;
+          };
+
+          newInput.id = "calificacion" + numCalificacion;
+          newInput.type = "range";
+          newInput.name = "calificacion" + numCalificacion;
+          newInput.min = 0;
+          newInput.max = 100;
+          newInput.value = 0;
+
+          newLabel = document.createElement("label");
+          newLabel.fot = "calificacion" + numCalificacion;
+          newLabel.id = "lcalificacion" + numCalificacion;
+          newLabel.innerText = "0";
+
+          newButton = document.createElement("button");
+          newButton.type = "button";
+          newButton.name = "button";
+          newButton.innerText = "Eliminar";
+          newButton.onclick = function() {
+            divEliminar = this.parentElement;
+            divEliminar.parentElement.removeChild(divEliminar);
+            calcular();
+          }
+
+          newDiv.appendChild(newInput);
+          newDiv.appendChild(newLabel);
+          newDiv.appendChild(newButton);
+          document.getElementById("form").appendChild(newDiv);
+          calcular();
+        }
+
+        function init() {
+          document.getElementById("btnAgregar").onclick = agregar;
+          document.getElementById("form").oninput = calcular;
+        }
+
+        window.onload = init;
+      </script>
+    </form>
+
+    <input type="button" id="btnAgregar" name="btnAgregar" value="Agregar">
+    <div>
+      Promedio: <span id="promedio">0 - Reprobado</span>
+    </div>
+  </div>
+</body>
+
+</html>
